@@ -1,0 +1,81 @@
+.home_section {
+  width: 100%;
+  position: relative;
+  top: 60px;
+  background-color: #e7e7e7;
+  /* min-height: calc(100vh - 60px); */
+  border-bottom: 2px solid rgb(199, 199, 199);
+  margin-bottom: 10px;
+}
+/* Container Flex Setup */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+/* Left Side (75% width) */
+.left_side {
+  flex: 3;
+  min-width: 300px;
+}
+
+/* Right Side (25% width) */
+.right_side {
+  flex: 1;
+  min-width: 250px;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Optional: Banner styling */
+.banner_part {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* Right-side content */
+.right_side h4 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+.right_side img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.right_side a {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #007185;
+  text-decoration: none;
+  font-weight: 500;
+}
+.center_img {
+  display: block;
+  width: 80%;
+  margin: auto;
+}
+
+/* Ensure additional Productdata components are styled properly */
+.container > .left_side ~ .left_side,
+.container > .Productdata {
+  flex-basis: 100%;
+}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left_side,
+  .right_side {
+    flex: 1 1 100%;
+  }
+}

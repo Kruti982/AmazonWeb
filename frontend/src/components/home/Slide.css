@@ -1,0 +1,138 @@
+.products_section {
+  padding: 20px;
+}
+
+.products_deal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view_btn {
+  margin-right: 2rem;
+  padding: 5px 10px;
+  background-color: #2874f0;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.view_btn:hover {
+  background-color: #007185;
+}
+
+.products_items {
+  text-align: center;
+  padding: 10px;
+}
+
+.product_img img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.products_name {
+  font-weight: bold;
+}
+
+.products_offer {
+  color: green;
+}
+
+.products_explore {
+  font-size: 12px;
+  color: gray;
+}
+.slide-container {
+  margin-top: 3rem;
+  margin: 20px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+}
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.product-box {
+  padding: 10px;
+  text-align: center;
+}
+
+.product-box img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
+.products_items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.products_items:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product_img {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.product_img img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.products_name,
+.products_offer,
+.products_explore {
+  margin: 4px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.products_name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.products_offer {
+  color: #007185;
+  font-weight: 500;
+}
+
+.products_explore {
+  font-size: 12px;
+  color: #555;
+}
+.slide-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
