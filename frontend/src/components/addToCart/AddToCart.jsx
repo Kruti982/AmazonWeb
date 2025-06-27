@@ -10,6 +10,7 @@ const Cart = () => {
   const { account, setAccount } = context || {};
 
   const { id } = useParams();
+  console.log(id);
   const navigate = useNavigate();
 
   const [inddata, setIndedata] = useState(null);
@@ -41,6 +42,7 @@ const Cart = () => {
       setLoading(false);
     }
   };
+  console.log(inddata);
 
   useEffect(() => {
     getinddata();

@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./Slide.css";
 
 const Slide = ({ title, products }) => {
-  console.log("Slide received products:", products);
+  // console.log("Slide received products:", products);
   const validProducts =
     Array.isArray(products) && products.length > 0 ? products : [];
 

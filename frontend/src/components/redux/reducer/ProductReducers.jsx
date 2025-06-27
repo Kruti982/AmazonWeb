@@ -1,10 +1,17 @@
+const data = await fetch("http://localhost:8000/getproductsdata", {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 const initialState = {
-  products: [],
+  products: await data.json(),
   loading: false,
   error: null,
 };
 
-const getProductReducers = (state = initialState, action) => {
+const getProductReducers = (state = initialState.products, action) => {
   switch (action.type) {
     case "GET_PRODUCTS_LOADING":
       return {

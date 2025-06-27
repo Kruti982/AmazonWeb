@@ -13,7 +13,7 @@ const Routing = () => {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/buynow" element={<ShoppingCart />} />
-      <Route path="/cart" element={<AddToCart />} />
+      <Route path="//getproductsone/:id" element={<AddToCart />} />
     </Routes>
   );
 };

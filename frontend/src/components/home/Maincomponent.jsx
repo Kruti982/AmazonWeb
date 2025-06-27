@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-
 import Banner from "./Banner";
 import "./Home.css";
-import Productdata from "./Productdata";
+import Slide from "./Slide";
 import NewNavbaar from "../newNavbaar/NewNavbaar";
 import Footer from "../footer/Footer";
 import Navbar from "../Navbar/Navbar";
@@ -10,14 +9,15 @@ import { getProducts } from "../redux/actions/Action";
 import { useSelector, useDispatch } from "react-redux";
 
 const Maincomponent = () => {
-  const { products } = useSelector((state) => state.getproductsdata);
+  const products = useSelector((state) => state.getproductsdata);
+  console.log(products);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
-  console.log(products);
+
   return (
     <>
       <Navbar />
@@ -30,7 +30,7 @@ const Maincomponent = () => {
           </div>
         </div>
         <div className="left_side">
-          <Productdata title="Deals of the day" products={products} />
+          <Slide title="Deals of the day" products={products} />
         </div>
         <div className="right_side">
           <h4>Festive latest Launches</h4>
@@ -46,9 +46,9 @@ const Maincomponent = () => {
             alt=""
           />
         </div>
-        <Productdata title="Today's Deal" products={products} />
-        <Productdata title="Upto 80% off" products={products} />
-        <Productdata title="Best Sellers" products={products} />
+        <Slide title="Today's Deal" products={products} />
+        <Slide title="Upto 80% off" products={products} />
+        <Slide title="Best Sellers" products={products} />
       </section>
       <Footer />
     </>
