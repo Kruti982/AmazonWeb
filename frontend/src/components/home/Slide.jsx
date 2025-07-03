@@ -40,24 +40,26 @@ const Slide = ({ title, products }) => {
           </p>
         ) : (
           <Slider {...settings}>
-            {validProducts.map((product) => (
-              <NavLink to={`/getproductsone/${product.id}`} key={product.id}>
-                <div className="products_items">
-                  <div className="product_img">
-                    <img
-                      src={product.url || "https://via.placeholder.com/150"}
-                      alt={product.title?.shortTitle || "product"}
-                      loading="lazy"
-                    />
+            {validProducts.map((product) => {
+              return (
+                <NavLink to={`/getproductsone/${product.id}`} key={product.id}>
+                  <div className="products_items">
+                    <div className="product_img">
+                      <img
+                        src={product.url || "https://via.placeholder.com/150"}
+                        alt={product.title?.shortTitle || "product"}
+                        loading="lazy"
+                      />
+                    </div>
+                    <p className="products_name">{product.title?.shortTitle}</p>
+                    <p className="products_offer" style={{ color: "#007185" }}>
+                      {product.discount}
+                    </p>
+                    <p className="products_explore">{product.tagline}</p>
                   </div>
-                  <p className="products_name">{product.title?.shortTitle}</p>
-                  <p className="products_offer" style={{ color: "#007185" }}>
-                    {product.discount}
-                  </p>
-                  <p className="products_explore">{product.tagline}</p>
-                </div>
-              </NavLink>
-            ))}
+                </NavLink>
+              );
+            })}
           </Slider>
         )}
       </div>

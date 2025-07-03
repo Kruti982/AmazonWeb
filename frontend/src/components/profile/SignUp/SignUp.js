@@ -8,7 +8,6 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  Link,
   Stack,
   TextField,
   Typography,
@@ -20,6 +19,8 @@ import ColorModeSelect from "../shared-theme/ColorModeSelect";
 import { GoogleIcon } from "./CustomIcons";
 import { NavLink, useNavigate } from "react-router";
 import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -66,29 +67,26 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 
 export default function SignUp(props) {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState([
-    {
-      fname: "",
-      email: "",
-      password: "",
-    },
-  ]);
+  const [userData, setUserData] = useState({
+    fname: "",
+    email: "",
+    mobile: "",
+    password: "",
+  });
 
-  const [nameError, setNameError] = React.useState(false);
-  const [nameErrorMessage, setNameErrorMessage] = React.useState("");
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
+  const [nameError, setNameError] = useState(false);
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
-  const validateInputs = () => {
-    const name = document.getElementById("name");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-
+  const sendData = async (e) => {
+    e.preventDefault();
+    const { fname, email, mobile, password } = userData;
     let isValid = true;
 
-    if (!name.value || name.value.trim().length < 1) {
+    if (!fname.trim()) {
       setNameError(true);
       setNameErrorMessage("Name is required.");
       isValid = false;
@@ -97,7 +95,8 @@ export default function SignUp(props) {
       setNameErrorMessage("");
     }
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(email)) {
       setEmailError(true);
       setEmailErrorMessage("Please enter a valid email address.");
       isValid = false;
@@ -106,42 +105,50 @@ export default function SignUp(props) {
       setEmailErrorMessage("");
     }
 
-    if (!password.value || password.value.length < 6) {
+    const mobileRegex = /^[6-9]\d{9}$/;
+    if (!mobileRegex.test(mobile)) {
+      toast.error("Enter a valid 10-digit mobile number starting with 6-9");
+      isValid = false;
+    }
+
+    if (password.length < 6) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("Password must be at least 6 characters.");
       isValid = false;
     } else {
       setPasswordError(false);
       setPasswordErrorMessage("");
     }
 
-    return isValid;
-  };
+    if (!isValid) return;
 
-  const handleSubmit = (event) => {
-    if (nameError || emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
-
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
+    const res = await fetch("/userregistration", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ fname, email, mobile, password }),
     });
+
+    const data = await res.json();
+    if (res.status === 200 || data) {
+      toast.success("User registered successfully!");
+      setUserData({ fname: "", email: "", mobile: "", password: "" });
+      setTimeout(() => navigate("/"), 3000);
+    } else {
+      toast.error("Invalid Data");
+    }
   };
+
   const addData = (e) => {
     const { name, value } = e.target;
-    setUserData(() => {
-      return {
-        ...userData,
-        [name]: value,
-      };
-    });
+    if (name === "mobile") {
+      const digits = value.replace(/\D/g, "");
+      if (digits.length <= 10) {
+        setUserData({ ...userData, [name]: digits });
+      }
+    } else {
+      setUserData({ ...userData, [name]: value });
+    }
   };
-  console.log(userData);
 
   return (
     <AppTheme {...props}>
@@ -166,38 +173,24 @@ export default function SignUp(props) {
           <Card variant="outlined">
             <NavLink to={"/"}>
               <CancelTwoToneIcon
-                style={{
-                  display: "block",
-                  float: "right",
-                  cursor: "pointer",
-                  margin: "-24px",
-                }}
+                style={{ float: "right", cursor: "pointer", margin: "-24px" }}
               />
             </NavLink>
-
             <img
               src="/amazonlogo.png"
               alt="Amazon logo"
-              style={{
-                width: "15vh",
-                margin: "auto",
-              }}
+              style={{ width: "15vh", margin: "auto" }}
             />
-
             <Typography
               component="h1"
               variant="h4"
-              sx={{
-                fontSize: "clamp(2rem, 10vw, 2.15rem)",
-                textAlign: "center",
-              }}
+              sx={{ textAlign: "center" }}
             >
               Sign up
             </Typography>
-
             <Box
               component="form"
-              onSubmit={handleSubmit}
+              onSubmit={sendData}
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
               noValidate
             >
@@ -207,34 +200,46 @@ export default function SignUp(props) {
                   id="name"
                   name="fname"
                   placeholder="Jon Snow"
-                  autoComplete="name"
                   required
                   fullWidth
                   error={nameError}
                   helperText={nameErrorMessage}
-                  color={nameError ? "error" : "primary"}
-                  onChange={addData}
                   value={userData.fname}
+                  onChange={addData}
                 />
               </FormControl>
-
               <FormControl>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <TextField
                   id="email"
                   name="email"
-                  placeholder="your@email.com"
-                  autoComplete="email"
+                  placeholder="you@example.com"
                   required
                   fullWidth
                   error={emailError}
                   helperText={emailErrorMessage}
-                  color={emailError ? "error" : "primary"}
-                  onChange={addData}
                   value={userData.email}
+                  onChange={addData}
                 />
               </FormControl>
-
+              <FormControl>
+                <FormLabel htmlFor="mobile">Mobile</FormLabel>
+                <TextField
+                  id="mobile"
+                  name="mobile"
+                  placeholder="9876543210"
+                  type="tel"
+                  inputProps={{
+                    maxLength: 10,
+                    inputMode: "numeric",
+                    pattern: "[0-9]*",
+                  }}
+                  required
+                  fullWidth
+                  value={userData.mobile}
+                  onChange={addData}
+                />
+              </FormControl>
               <FormControl>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <TextField
@@ -242,36 +247,25 @@ export default function SignUp(props) {
                   name="password"
                   placeholder="••••••"
                   type="password"
-                  autoComplete="new-password"
                   required
                   fullWidth
                   error={passwordError}
                   helperText={passwordErrorMessage}
-                  color={passwordError ? "error" : "primary"}
-                  onChange={addData}
                   value={userData.password}
+                  onChange={addData}
                 />
               </FormControl>
-
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={<Checkbox value="allowExtraEmails" />}
                 label="I want to receive updates via email."
               />
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={validateInputs}
-              >
+              <Button type="submit" fullWidth variant="contained">
                 Sign up
               </Button>
             </Box>
-
             <Divider>
               <Typography sx={{ color: "text.secondary" }}>or</Typography>
             </Divider>
-
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <Button
                 fullWidth
@@ -284,13 +278,8 @@ export default function SignUp(props) {
               <Typography sx={{ textAlign: "center" }}>
                 Already have an account?{" "}
                 <NavLink
-                  to={"/signin"}
-                  component="button"
-                  variant="body2"
-                  style={{
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  }}
+                  to="/signin"
+                  style={{ textDecoration: "underline", cursor: "pointer" }}
                 >
                   Sign in
                 </NavLink>
@@ -299,6 +288,7 @@ export default function SignUp(props) {
           </Card>
         </Box>
       </SignUpContainer>
+      <ToastContainer position="top-center" autoClose={5000} theme="light" />
     </AppTheme>
   );
 }

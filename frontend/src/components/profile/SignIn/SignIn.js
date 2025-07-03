@@ -146,7 +146,7 @@ export default function SignIn(props) {
         });
       } else {
         setAccount(data);
-        setData({ email: "", password: "" });
+        setData({ ...logdata, email: "", password: "" });
         toast.success("Login Successfully done 😃!", {
           position: "top-center",
         });
@@ -211,7 +211,8 @@ export default function SignIn(props) {
             </Typography>
             <Box
               component="form"
-              noValidate
+              onSubmit={senddata}
+              autoComplete="off"
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -228,7 +229,7 @@ export default function SignIn(props) {
                   type="email"
                   name="email"
                   placeholder="your@email.com"
-                  autoComplete="email"
+                  autoComplete="new-email"
                   required
                   fullWidth
                   variant="outlined"
@@ -245,7 +246,7 @@ export default function SignIn(props) {
                   name="password"
                   type="password"
                   placeholder="••••••"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   required
                   fullWidth
                   variant="outlined"

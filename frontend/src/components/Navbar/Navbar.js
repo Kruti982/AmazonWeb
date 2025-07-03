@@ -12,7 +12,9 @@ const Navbar = () => {
       <nav>
         <div className="left">
           <div className="navlogo">
-            <img src="/amazonlogo.png" alt="Amazon logo" />
+            <NavLink to="/">
+              <img src="/amazonlogo.png" alt="Amazon logo" />
+            </NavLink>
           </div>
           <div className="searchInput">
             <div className="nav_searchbaar">

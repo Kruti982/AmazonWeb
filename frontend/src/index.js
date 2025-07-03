@@ -11,9 +11,11 @@ root.render(
   <>
     <Provider store={store}>
       <React.StrictMode>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <Contextprovider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Contextprovider>
       </React.StrictMode>
     </Provider>
   </>

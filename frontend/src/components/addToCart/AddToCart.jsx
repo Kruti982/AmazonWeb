@@ -4,8 +4,11 @@ import { Divider } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Logincontext } from "./Contexprovider";
+import Navbar from "../Navbar/Navbar";
+import NewNavbaar from "../newNavbaar/NewNavbaar";
+import Footer from "../footer/Footer";
 
-const Cart = () => {
+const AddToCart = () => {
   const context = useContext(Logincontext);
   const { account, setAccount } = context || {};
 
@@ -13,7 +16,7 @@ const Cart = () => {
   console.log(id);
   const navigate = useNavigate();
 
-  const [inddata, setIndedata] = useState(null);
+  const [inddata, setInddata] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cartAdded, setCartAdded] = useState(false);
 
@@ -30,10 +33,10 @@ const Cart = () => {
 
       const data = await res.json();
 
-      if (res.status !== 201 || !data) {
-        alert("No product data available.");
+      if (res.status === 201 || data) {
+        setInddata(data);
       } else {
-        setIndedata(data);
+        alert("No product data available.");
       }
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -77,10 +80,14 @@ const Cart = () => {
 
   if (loading) {
     return (
-      <div className="circle">
-        <CircularProgress />
-        <h2>Loading...</h2>
-      </div>
+      <>
+        <Navbar />
+        <NewNavbaar />
+        <div className="circle">
+          <CircularProgress size={60} />
+          <h2 style={{ marginTop: "1rem" }}>Loading...</h2>
+        </div>
+      </>
     );
   }
 
@@ -93,79 +100,87 @@ const Cart = () => {
   }
 
   return (
-    <div className="cart_section">
-      <div className="cart_container">
-        <div className="left_cart">
-          <img
-            src={inddata.detailUrl}
-            alt="product"
-            onError={(e) => (e.target.src = "/fallback.png")}
-          />
-          <div className="cart_btn">
-            <button className="cart_btn1" onClick={() => addtocart(inddata.id)}>
-              Add to Cart
-            </button>
-            <button
-              className="cart_btn2"
-              disabled={!account}
-              title={!account ? "Please login to buy" : "Proceed to buy"}
-            >
-              Buy Now
-            </button>
+    <>
+      <Navbar />
+      <NewNavbaar />
+      <div className="cart_section">
+        <div className="cart_container">
+          <div className="left_cart">
+            <img
+              src={inddata.detailUrl}
+              alt="product"
+              onError={(e) => (e.target.src = "/fallback.png")}
+            />
+            <div className="cart_btn">
+              <button
+                className="cart_btn1"
+                onClick={() => addtocart(inddata.id)}
+              >
+                Add to Cart
+              </button>
+              <button
+                className="cart_btn2"
+                disabled={!account}
+                title={!account ? "Please login to buy" : "Proceed to buy"}
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="right_cart">
-          <h3>{inddata.title.shortTitle}</h3>
-          <h4>{inddata.title.longTitle}</h4>
-          <Divider />
-          <p className="mrp">
-            M.R.P. : <del>₹{inddata.price.mrp}</del>
-          </p>
-          <p>
-            Deal of the Day :{" "}
-            <span style={{ color: "#B12704" }}>₹{inddata.price.cost}.00</span>
-          </p>
-          <p>
-            You save :{" "}
-            <span style={{ color: "#B12704" }}>
-              ₹{inddata.price.mrp - inddata.price.cost} (
-              {inddata.price.discount})
-            </span>
-          </p>
-
-          <div className="discount_box">
-            <h5>
-              Discount :{" "}
-              <span style={{ color: "#111" }}>{inddata.discount}</span>
-            </h5>
-            <h4>
-              FREE Delivery :{" "}
-              <span style={{ fontWeight: "600" }}>Oct 8 - 21</span> Details
-            </h4>
+          <div className="right_cart">
+            <h3>{inddata.title.shortTitle}</h3>
+            <h4>{inddata.title.longTitle}</h4>
+            <Divider />
+            <p className="mrp">
+              M.R.P. : <del>₹{inddata.price.mrp}</del>
+            </p>
             <p>
-              Fastest delivery:{" "}
-              <span style={{ fontWeight: "600" }}>Tomorrow 11AM</span>
+              Deal of the Day :{" "}
+              <span style={{ color: "#B12704" }}>₹{inddata.price.cost}.00</span>
+            </p>
+            <p>
+              You save :{" "}
+              <span style={{ color: "#B12704" }}>
+                ₹{inddata.price.mrp - inddata.price.cost} (
+                {inddata.price.discount})
+              </span>
+            </p>
+
+            <div className="discount_box">
+              <h5>
+                Discount :{" "}
+                <span style={{ color: "#111" }}>{inddata.discount}</span>
+              </h5>
+              <h4>
+                FREE Delivery :{" "}
+                <span style={{ fontWeight: "600" }}>Oct 8 - 21</span> Details
+              </h4>
+              <p>
+                Fastest delivery:{" "}
+                <span style={{ fontWeight: "600" }}>Tomorrow 11AM</span>
+              </p>
+            </div>
+
+            <p className="description">
+              About the Item:{" "}
+              <span
+                style={{
+                  color: "#565959",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  letterSpacing: "0.4px",
+                }}
+              >
+                {inddata.description}
+              </span>
             </p>
           </div>
-
-          <p className="description">
-            About the Item:{" "}
-            <span
-              style={{
-                color: "#565959",
-                fontSize: "14px",
-                fontWeight: "500",
-                letterSpacing: "0.4px",
-              }}
-            >
-              {inddata.description}
-            </span>
-          </p>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
-export default Cart;
+export default AddToCart;
