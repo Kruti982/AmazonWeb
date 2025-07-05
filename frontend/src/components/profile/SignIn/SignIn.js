@@ -22,7 +22,7 @@ import { GoogleIcon } from "./CustomIcons";
 import { useNavigate } from "react-router-dom";
 import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 import { NavLink } from "react-router-dom";
-import { Logincontext } from "../context/Contexprovider";
+import { Logincontext } from "../../context/Contexprovider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

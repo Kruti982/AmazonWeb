@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import Contextprovider from "../src/components/profile/context/Contexprovider"; // ✅ Import context
+import ContextProvider from "./components/context/Contexprovider";
 import store from "./Store";
 import { Provider } from "react-redux";
 
@@ -11,11 +11,11 @@ root.render(
   <>
     <Provider store={store}>
       <React.StrictMode>
-        <Contextprovider>
+        <ContextProvider>
           <BrowserRouter>
             <App />
           </BrowserRouter>
-        </Contextprovider>
+        </ContextProvider>
       </React.StrictMode>
     </Provider>
   </>

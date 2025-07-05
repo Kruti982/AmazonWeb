@@ -3,7 +3,7 @@ import "./AddToCart.css";
 import { Divider } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Logincontext } from "./Contexprovider";
+import { Logincontext } from "../context/Contexprovider";
 import Navbar from "../Navbar/Navbar";
 import NewNavbaar from "../newNavbaar/NewNavbaar";
 import Footer from "../footer/Footer";
@@ -11,8 +11,10 @@ import Footer from "../footer/Footer";
 const AddToCart = () => {
   const context = useContext(Logincontext);
   const { account, setAccount } = context || {};
+  console.log("Logincontext in AddToCart:", context);
 
   const { id } = useParams();
+
   console.log(id);
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ const AddToCart = () => {
 
       const data = await res.json();
 
-      if (res.status === 201 || data) {
+      if (res.status === 200 || data) {
         setInddata(data);
       } else {
         alert("No product data available.");
@@ -59,22 +61,24 @@ const AddToCart = () => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ inddata }),
+        body: JSON.stringify({
+          inddata,
+        }),
         credentials: "include",
       });
 
       const data = await res.json();
 
-      if (res.status !== 201 || !data) {
-        alert("Error adding to cart");
-      } else {
+      if (res.status === 201) {
+        console.log("Added to cart");
         setAccount(data);
-        setCartAdded(true);
         navigate("/buynow");
+      } else {
+        alert(data.error || "Failed to add to cart.");
       }
     } catch (error) {
       console.error("Add to cart error:", error);
-      alert("Could not add to cart. Try again.");
+      alert("Something went wrong while adding to cart.");
     }
   };
 
